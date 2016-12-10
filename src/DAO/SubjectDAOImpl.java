@@ -72,7 +72,7 @@ public class SubjectDAOImpl implements SubjectDAO {
 
     @Override
     public List<Result> getSubject(String subjectName) {
-        String sql = "SELECT subject.subject, competence, level, know, to_be_able_to, to_be_master_of, first from subject, questions WHERE questions.subject = ?";
+        String sql = "SELECT subject.subject, subject.competence, subject.lvl, subject.know, subject.to_be_able_to, subject.to_be_master_of, questions.FIRST FROM subject, questions WHERE subject.subject = questions.subject AND questions.subject = ?";
         List<Result> subjects = new ArrayList<Result>();
         List<Competence> competences = new ArrayList<Competence>();
         List<Questions> questions = new ArrayList<Questions>();
@@ -89,7 +89,7 @@ public class SubjectDAOImpl implements SubjectDAO {
                 Questions question = new Questions();
                 result.setName(resultSet.getString("subject"));
                 competence.setName(resultSet.getString("competence"));
-                competence.setLevel(resultSet.getInt("level"));
+                competence.setLevel(resultSet.getInt("lvl"));
                 competence.setKnow(resultSet.getString("know"));
                 competence.setToBeAbleTo(resultSet.getString("to_be_able_to"));
                 competence.setToBeMasterOf(resultSet.getString("to_be_master_of"));

@@ -1,14 +1,18 @@
 package model;
 
+import javax.swing.table.AbstractTableModel;
+import javax.swing.table.DefaultTableModel;
 import java.util.List;
 
 /**
  * Created by User on 26.11.2016.
  */
-public class Result {
+public class Result extends DefaultTableModel{
     private String name;
     private List<Competence> competences;
     private List<Questions> questions;
+
+    private static int DEFAULT_ROW_COUNT = 3;
 
     public Result(){
 
