@@ -10,7 +10,7 @@ import java.util.List;
 public class Result extends DefaultTableModel{
     private String name;
     private List<Competence> competences;
-    private List<Questions> questions;
+    private List<String> questions;
 
     private static int DEFAULT_ROW_COUNT = 3;
 
@@ -18,7 +18,7 @@ public class Result extends DefaultTableModel{
 
     }
 
-    public Result(String name, List<Competence> competences, List<Questions> questions) {
+    public Result(String name, List<Competence> competences, List<String> questions) {
         this.name = name;
         this.competences = competences;
         this.questions = questions;
@@ -45,11 +45,11 @@ public class Result extends DefaultTableModel{
         this.competences = competences;
     }
 
-    public List<Questions> getQuestionses() {
+    public List<String> getQuestionses() {
         return questions;
     }
 
-    public void setQuestionses(List<Questions> questions) {
+    public void setQuestionses(List<String> questions) {
         this.questions = questions;
     }
 

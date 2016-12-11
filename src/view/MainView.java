@@ -57,7 +57,7 @@ public class MainView {
                 System.out.println(name);
                 results = subjectDAO.getSubject(name);
                 tableData = new TableData(results);
-                tableData.setDataForModel();
+
 
 
 

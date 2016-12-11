@@ -1,7 +1,6 @@
 package DAO;
 
 import model.Competence;
-import model.Questions;
 import model.Result;
 
 import java.sql.*;
@@ -72,10 +71,10 @@ public class SubjectDAOImpl implements SubjectDAO {
 
     @Override
     public List<Result> getSubject(String subjectName) {
-        String sql = "SELECT subject.subject, subject.competence, subject.lvl, subject.know, subject.to_be_able_to, subject.to_be_master_of, questions.FIRST FROM subject, questions WHERE subject.subject = questions.subject AND questions.subject = ?";
+        String sql = "SELECT subject.subject, subject.competence, subject.lvl, subject.know, subject.to_be_able_to, subject.to_be_master_of, questions.FIRST, questions.SECOND, questions.THIRD, questions.FOURTH, questions.FIFTH, questions.SIXTH, questions.SEVENTH, questions.EIGHTH, questions.NINTH, questions.TENTH, questions.ELEVENTH, questions.TWELFTH, questions.THIRTEENTH, questions.FOURTEENTH, questions.FIFTEENTH, questions.SIXTEENTH, questions.SEVENTEENTH, questions.EIGHTEENTH, questions.NINETEENTH, questions.TWENTIETH FROM subject, questions WHERE subject.subject = questions.subject AND questions.subject = ?";
         List<Result> subjects = new ArrayList<Result>();
         List<Competence> competences = new ArrayList<Competence>();
-        List<Questions> questions = new ArrayList<Questions>();
+        List<String> questions = new ArrayList<String>();
         Connection connection = null;
         try{
             connection = getConnection();
@@ -86,16 +85,33 @@ public class SubjectDAOImpl implements SubjectDAO {
             while(resultSet.next()){
                 Result result = new Result();
                 Competence competence = new Competence();
-                Questions question = new Questions();
                 result.setName(resultSet.getString("subject"));
                 competence.setName(resultSet.getString("competence"));
                 competence.setLevel(resultSet.getInt("lvl"));
                 competence.setKnow(resultSet.getString("know"));
                 competence.setToBeAbleTo(resultSet.getString("to_be_able_to"));
                 competence.setToBeMasterOf(resultSet.getString("to_be_master_of"));
-                question.setFirstQestion(resultSet.getString("first"));
+                questions.add(resultSet.getString("first"));
+                questions.add(resultSet.getString("second"));
+                questions.add(resultSet.getString("third"));
+                questions.add(resultSet.getString("fourth"));
+                questions.add(resultSet.getString("fifth"));
+                questions.add(resultSet.getString("sixth"));
+                questions.add(resultSet.getString("seventh"));
+                questions.add(resultSet.getString("eighth"));
+                questions.add(resultSet.getString("ninth"));
+                questions.add(resultSet.getString("tenth"));
+                questions.add(resultSet.getString("eleventh"));
+                questions.add(resultSet.getString("twelfth"));
+                questions.add(resultSet.getString("thirteenth"));
+                questions.add(resultSet.getString("fourteenth"));
+                questions.add(resultSet.getString("fifteenth"));
+                questions.add(resultSet.getString("sixteenth"));
+                questions.add(resultSet.getString("seventeenth"));
+                questions.add(resultSet.getString("eighteenth"));
+                questions.add(resultSet.getString("nineteenth"));
+                questions.add(resultSet.getString("twentieth"));
                 competences.add(competence);
-                questions.add(question);
                 result.setCompetences(competences);
                 result.setQuestionses(questions);
                 subjects.add(result);

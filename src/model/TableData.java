@@ -1,19 +1,19 @@
 package model;
 
-import DAO.SubjectDAOImpl;
-import com.sun.xml.internal.bind.v2.runtime.reflect.opt.Const;
+import view.TextAreaRenderer;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 import java.util.Vector;
 
 /**
  * Created by User on 27.11.2016.
  */
-public class TableData extends DefaultTableModel{
+public class TableData {
 
     private List<Result> results;
     private JFrame frame;
@@ -23,7 +23,6 @@ public class TableData extends DefaultTableModel{
     private Vector<String> headerVector = new Vector<>();
     private DefaultTableModel model;
     private String[] columnNames = new String[]{"Планируемые результаты обучения", "1. Отсуствие усвоения", "2. Неполное усвоение", "3. Хорошее усвоение", "4. Отличное усвоение"};
-    //private Object[][] rowData;
 
     public TableData(List<Result> results) {
         this.results = results;
@@ -40,92 +39,189 @@ public class TableData extends DefaultTableModel{
         model = new DefaultTableModel(headerVector, 0);
         table = new JTable();
         table.setModel(model);
-
-        //rowData = getRowData();
-        //table = new JTable(rowData, headerVector);
         pane = new JScrollPane(table);
         frame.getContentPane().add(pane);
+        setDataForModel();
 
     }
 
     public void setDataForModel() {
-        Vector newRow = new Vector();
+        Vector<String> newRow;
+        String competenceName;
         int competenceLvl = 0;
-        String question;
+        List<String> questions;
+        String randomQuestion;
         for(int i = 0; i < results.size(); i++){
+            competenceName = results.get(i).getCompetences().get(i).getName();
             competenceLvl = results.get(i).getCompetences().get(i).getLevel();
-            question = results.get(i).getQuestionses().get(i).getFirstQestion();
+            questions = results.get(i).getQuestionses();
             switch (competenceLvl){
                 case 1:
-                    newRow.add("з1 " + question);
-                    newRow.add(Constants.VERY_BAD_FIRST_LVL_FIRST + question);
-                    newRow.add(Constants.BAD_FIRST_LVL_FIRST + question);
-                    newRow.add(Constants.GOOD_FIRST_LVL_FIRST + question);
-                    newRow.add(Constants.PERFECT_FIRST_LVL_FIRST + question);
-                    model.getDataVector().add(newRow);
-                    newRow.clear();
-                    newRow.add("у1" + question);
-                    newRow.add(Constants.VERY_BAD_SECOND_LVL_FIRST + question);
-                    newRow.add(Constants.BAD_SECOND_LVL_FIFTH + question);
-                    newRow.add(Constants.GOOD_SECOND_LVL_FIFTH + question);
-                    newRow.add(Constants.PERFECT_FIRST_LVL_FIRST);
-                    model.getDataVector().add(newRow);
-                    newRow.clear();
-                    newRow.add("в1 " + question);
-                    newRow.add(Constants.VERY_BAD_THIRD_LVL_FIRST + question);
-                    newRow.add(Constants.BAD_THIRD_LVL_FIRST + question);
-                    newRow.add(Constants.GOOD_FIRST_LVL_FIRST + question);
-                    newRow.add(Constants.PERFECT_FIRST_LVL_FIRST + question);
-                    model.getDataVector().add(newRow);
-                    newRow.clear();
+                    newRow = new Vector<>();
+                    newRow.add("Знать " + " Код компетенции - " + competenceName + " пороговый уровень формирования" );
+                    model.addRow(newRow);
+                    newRow = new Vector<>();
+                    newRow.add("з1 " + results.get(i).getCompetences().get(i).getKnow());
+                    newRow.add(Constants.getVeryBadFirstLvl() + getRandomQuestion(questions));
+                    newRow.add(Constants.getBadFirstLvl() + getRandomQuestion(questions));
+                    newRow.add(Constants.getGoodFirstLvl() + getRandomQuestion(questions));
+                    newRow.add(Constants.getPerfectFirstLvl() + getRandomQuestion(questions));
+                    model.addRow(newRow);
+                    newRow = new Vector<>();
+                    newRow.add("Уметь " + " Код компетенции - " + competenceName + " пороговый уровень формирования" );
+                    model.addRow(newRow);
+                    newRow = new Vector<>();
+                    newRow.add("у1" + results.get(i).getCompetences().get(i).getToBeAbleTo());
+                    newRow.add(Constants.getVeryBadSecondLvl() + getRandomQuestion(questions));
+                    newRow.add(Constants.getBadFirstLvl() + getRandomQuestion(questions));
+                    newRow.add(Constants.getGoodFirstLvl() + getRandomQuestion(questions));
+                    newRow.add(Constants.getPerfectFirstLvl() + getRandomQuestion(questions));
+                    model.addRow(newRow);
+                    newRow = new Vector<>();
+                    newRow.add("Владеть " + " Код компетенции - " + competenceName + " пороговый уровень формирования" );
+                    model.addRow(newRow);
+                    newRow = new Vector<>();
+                    newRow.add("в1 " + results.get(i).getCompetences().get(i).getToBeMasterOf());
+                    newRow.add(Constants.getVeryBadFirstLvl() + getRandomQuestion(questions));
+                    newRow.add(Constants.getBadFirstLvl() + getRandomQuestion(questions));
+                    newRow.add(Constants.getGoodFirstLvl() + getRandomQuestion(questions));
+                    newRow.add(Constants.getPerfectFirstLvl() + getRandomQuestion(questions));
+                    model.addRow(newRow);
                     break;
                 case 2:
-                    newRow.add("з2 " + question);
-                    newRow.add(Constants.VERY_BAD_FIRST_LVL_FIRST + question);
-                    newRow.add(Constants.BAD_FIRST_LVL_FIRST + question);
-                    newRow.add(Constants.GOOD_FIRST_LVL_FIRST + question);
-                    newRow.add(Constants.PERFECT_FIRST_LVL_FIRST + question);
-                    model.getDataVector().add(newRow);
-                    newRow.clear();
-                    newRow.add("у2" + question);
-                    newRow.add(Constants.VERY_BAD_SECOND_LVL_FIRST + question);
-                    newRow.add(Constants.BAD_SECOND_LVL_FIFTH + question);
-                    newRow.add(Constants.GOOD_SECOND_LVL_FIFTH + question);
-                    newRow.add(Constants.PERFECT_SECOND_LVL_FIRST + question);
-                    model.getDataVector().add(newRow);
-                    newRow.clear();
-                    newRow.add("в2 " + question);
-                    newRow.add(Constants.VERY_BAD_THIRD_LVL_FIRST + question);
-                    newRow.add(Constants.BAD_THIRD_LVL_FIRST + question);
-                    newRow.add(Constants.GOOD_FIRST_LVL_FIRST + question);
-                    newRow.add(Constants.PERFECT_FIRST_LVL_FIRST + question);
-                    model.getDataVector().add(newRow);
-                    newRow.clear();
+                    newRow = new Vector<>();
+                    newRow.add("Знать " + " Код компетенции - " + competenceName + " углубленный уровень формирования" );
+                    model.addRow(newRow);
+                    newRow = new Vector<>();
+                    newRow.add("з1 " + results.get(i).getCompetences().get(i).getKnow());
+                    newRow.add(Constants.getVeryBadFirstLvl() + getRandomQuestion(questions));
+                    newRow.add(Constants.getBadFirstLvl() + getRandomQuestion(questions));
+                    newRow.add(Constants.getGoodFirstLvl() + getRandomQuestion(questions));
+                    newRow.add(Constants.getPerfectFirstLvl() + getRandomQuestion(questions));
+                    model.addRow(newRow);
+                    newRow = new Vector<>();
+                    newRow.add("з2 " + results.get(i).getCompetences().get(i).getKnow());
+                    newRow.add(Constants.getVeryBadSecondLvl() + getRandomQuestion(questions));
+                    newRow.add(Constants.getBadSecondLvl() + getRandomQuestion(questions));
+                    newRow.add(Constants.getGoodSecondLvl() + getRandomQuestion(questions));
+                    newRow.add(Constants.getPerfectSecondLvl() + getRandomQuestion(questions));
+                    model.addRow(newRow);
+                    newRow = new Vector<>();
+                    newRow.add("Уметь " + " Код компетенции - " + competenceName + " углубленный уровень формирования" );
+                    model.addRow(newRow);
+                    newRow = new Vector<>();
+                    newRow.add("у1" + results.get(i).getCompetences().get(i).getToBeAbleTo());
+                    newRow.add(Constants.getVeryBadSecondLvl() + getRandomQuestion(questions));
+                    newRow.add(Constants.getBadFirstLvl() + getRandomQuestion(questions));
+                    newRow.add(Constants.getGoodFirstLvl() + getRandomQuestion(questions));
+                    newRow.add(Constants.getPerfectFirstLvl() + getRandomQuestion(questions));
+                    model.addRow(newRow);
+                    newRow = new Vector<>();
+                    newRow.add("у2" + results.get(i).getCompetences().get(i).getToBeAbleTo());
+                    newRow.add(Constants.getVeryBadSecondLvl() + getRandomQuestion(questions));
+                    newRow.add(Constants.getBadSecondLvl() + getRandomQuestion(questions));
+                    newRow.add(Constants.getGoodSecondLvl() + getRandomQuestion(questions));
+                    newRow.add(Constants.getPerfectFirstLvl() + getRandomQuestion(questions));
+                    model.addRow(newRow);
+                    newRow = new Vector<>();
+                    newRow.add("Владеть " + " Код компетенции - " + competenceName + " углубленный уровень формирования" );
+                    model.addRow(newRow);
+                    newRow = new Vector<>();
+                    newRow.add("в1 " + results.get(i).getCompetences().get(i).getToBeMasterOf());
+                    newRow.add(Constants.getVeryBadFirstLvl() + getRandomQuestion(questions));
+                    newRow.add(Constants.getBadFirstLvl() + getRandomQuestion(questions));
+                    newRow.add(Constants.getGoodFirstLvl() + getRandomQuestion(questions));
+                    newRow.add(Constants.getPerfectFirstLvl() + getRandomQuestion(questions));
+                    model.addRow(newRow);
+                    newRow = new Vector<>();
+                    newRow.add("в2 " + results.get(i).getCompetences().get(i).getToBeMasterOf());
+                    newRow.add(Constants.getVeryBadSecondLvl() + getRandomQuestion(questions));
+                    newRow.add(Constants.getBadSecondLvl() + getRandomQuestion(questions));
+                    newRow.add(Constants.getGoodSecondLvl() + getRandomQuestion(questions));
+                    newRow.add(Constants.getPerfectSecondLvl() + getRandomQuestion(questions));
+                    model.addRow(newRow);
                     break;
                 case 3:
-                    newRow.add("з3 " + question);
-                    newRow.add( Constants.VERY_BAD_FIRST_LVL_FIRST + question);
-                    newRow.add(Constants.BAD_FIRST_LVL_FIRST + question);
-                    newRow.add(Constants.GOOD_FIRST_LVL_FIRST + question);
-                    newRow.add(Constants.PERFECT_FIRST_LVL_FIRST + question);
-                    model.getDataVector().add(newRow);
-                    newRow.clear();
-                    newRow.add("у3" + question);
-                    newRow.add(Constants.VERY_BAD_SECOND_LVL_FIRST + question);
-                    newRow.add(Constants.BAD_THIRD_LVL_FIRST + question);
-                    newRow.add(Constants.GOOD_FIRST_LVL_FIRST + question);
-                    newRow.add(Constants.PERFECT_FIRST_LVL_FIRST + question);
-                    model.getDataVector().add(newRow);
-                    newRow.clear();
-                    newRow.add("в3 " + question);
-                    newRow.add(Constants.VERY_BAD_THIRD_LVL_FIRST + question);
-                    newRow.add(Constants.BAD_THIRD_LVL_FIRST + question);
-                    newRow.add(Constants.GOOD_FIRST_LVL_FIRST + question);
-                    newRow.add(Constants.PERFECT_FIRST_LVL_FIRST + question);
-                    model.getDataVector().add(newRow);
-                    newRow.clear();
+                    newRow = new Vector<>();
+                    newRow.add(" Знать " + " Код компетенции - " + competenceName + " продвинутый уровень формирования" );
+                    model.addRow(newRow);
+                    newRow = new Vector<>();
+                    newRow.add("з1 " + results.get(i).getCompetences().get(i).getKnow());
+                    newRow.add(Constants.getVeryBadFirstLvl() + getRandomQuestion(questions));
+                    newRow.add(Constants.getBadFirstLvl() + getRandomQuestion(questions));
+                    newRow.add(Constants.getGoodFirstLvl() + getRandomQuestion(questions));
+                    newRow.add(Constants.getPerfectFirstLvl() + getRandomQuestion(questions));
+                    model.addRow(newRow);
+                    newRow = new Vector<>();
+                    newRow.add("з2 " + results.get(i).getCompetences().get(i).getKnow());
+                    newRow.add(Constants.getVeryBadSecondLvl() + getRandomQuestion(questions));
+                    newRow.add(Constants.getBadSecondLvl() + getRandomQuestion(questions));
+                    newRow.add(Constants.getGoodSecondLvl() + getRandomQuestion(questions));
+                    newRow.add(Constants.getPerfectSecondLvl() + getRandomQuestion(questions));
+                    model.addRow(newRow);
+                    newRow = new Vector<>();
+                    newRow.add("з3 " + results.get(i).getCompetences().get(i).getKnow());
+                    newRow.add( Constants.getVeryBadThirdLvl() + getRandomQuestion(questions));
+                    newRow.add(Constants.getBadThirdLvl() + getRandomQuestion(questions));
+                    newRow.add(Constants.getGoodThirdLvl() + getRandomQuestion(questions));
+                    newRow.add(Constants.getPerfectThirdLvl() + getRandomQuestion(questions));
+                    model.addRow(newRow);
+                    newRow = new Vector<>();
+                    newRow.add(" Уметь " + " Код компетенции - " + competenceName + " продвинутый уровень формирования" );
+                    model.addRow(newRow);
+                    newRow = new Vector<>();
+                    newRow.add("у1" + results.get(i).getCompetences().get(i).getToBeAbleTo());
+                    newRow.add(Constants.getVeryBadSecondLvl() + getRandomQuestion(questions));
+                    newRow.add(Constants.getBadFirstLvl() + getRandomQuestion(questions));
+                    newRow.add(Constants.getGoodFirstLvl() + getRandomQuestion(questions));
+                    newRow.add(Constants.getPerfectFirstLvl() + getRandomQuestion(questions));
+                    model.addRow(newRow);
+                    newRow = new Vector<>();
+                    newRow.add("у2" + results.get(i).getCompetences().get(i).getToBeAbleTo());
+                    newRow.add(Constants.getVeryBadSecondLvl() + getRandomQuestion(questions));
+                    newRow.add(Constants.getBadSecondLvl() + getRandomQuestion(questions));
+                    newRow.add(Constants.getGoodSecondLvl() + getRandomQuestion(questions));
+                    newRow.add(Constants.getPerfectFirstLvl() + getRandomQuestion(questions));
+                    model.addRow(newRow);
+                    newRow = new Vector<>();
+                    newRow.add("у3" + results.get(i).getCompetences().get(i).getToBeAbleTo());
+                    newRow.add(Constants.getVeryBadThirdLvl() + getRandomQuestion(questions));
+                    newRow.add(Constants.getBadThirdLvl() + getRandomQuestion(questions));
+                    newRow.add(Constants.getGoodThirdLvl() + getRandomQuestion(questions));
+                    newRow.add(Constants.getPerfectThirdLvl() + getRandomQuestion(questions));
+                    model.addRow(newRow);
+                    newRow = new Vector<>();
+                    newRow.add(" Владеть " + " Код компетенции - " + competenceName + " продвинутый уровень формирования" );
+                    model.addRow(newRow);
+                    newRow = new Vector<>();
+                    newRow.add("в1 " + getRandomQuestion(questions));
+                    newRow.add(Constants.getVeryBadFirstLvl() + getRandomQuestion(questions));
+                    newRow.add(Constants.getBadFirstLvl() + getRandomQuestion(questions));
+                    newRow.add(Constants.getGoodFirstLvl() + getRandomQuestion(questions));
+                    newRow.add(Constants.getPerfectFirstLvl() + getRandomQuestion(questions));
+                    model.addRow(newRow);
+                    newRow = new Vector<>();
+                    newRow.add("в2 " + results.get(i).getCompetences().get(i).getToBeMasterOf());
+                    newRow.add(Constants.getVeryBadSecondLvl() + getRandomQuestion(questions));
+                    newRow.add(Constants.getBadSecondLvl() + getRandomQuestion(questions));
+                    newRow.add(Constants.getGoodSecondLvl() + getRandomQuestion(questions));
+                    newRow.add(Constants.getPerfectSecondLvl() + getRandomQuestion(questions));
+                    model.addRow(newRow);
+                    newRow = new Vector<>();
+                    newRow.add("в3 " + results.get(i).getCompetences().get(i).getToBeMasterOf());
+                    newRow.add(Constants.getVeryBadThirdLvl() + getRandomQuestion(questions));
+                    newRow.add(Constants.getBadThirdLvl() + getRandomQuestion(questions));
+                    newRow.add(Constants.getGoodThirdLvl() + getRandomQuestion(questions));
+                    newRow.add(Constants.getPerfectThirdLvl() + getRandomQuestion(questions));
+                    model.addRow(newRow);
                     break;
             }
         }
+    }
+
+    public String getRandomQuestion(List<String> items){
+        Random randomGenerator = new Random();
+        int index = randomGenerator.nextInt(items.size());
+        return items.get(index);
     }
 }
